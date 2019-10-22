@@ -5,11 +5,11 @@ package com.xingray.observer
  *
  * @param <T> 数据类型
  */
-interface ListObserver<T> : Observer<MutableList<T>> {
+interface ListObserver<E : Observable?, T : ObservableList<E>> : Observer<T> {
 
-    fun onInsert(position: Int, addList: MutableList<T>)
+    fun onInsert(position: Int, insertList: List<E>)
 
     fun onRemove(position: Int, range: Int)
 
-    fun onItemUpdate(position: Int, patches: Array<Patch>)
+    fun onItemUpdate(position: Int, patches: List<Patch>)
 }

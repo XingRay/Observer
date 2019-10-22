@@ -1,32 +1,33 @@
 package com.xingray.observer
 
 /**
- * 可观察列表
+ * 可观察列表对象
  *
  * @author : leixing
+ * @date : 2019/10/21 22:09
  * @version : 1.0.0
  * mail : leixing1012@qq.com
- * @date : 2019/9/8 13:39
+ *
  */
-class ObservableList<T> : ObserverManager<ListObserver<T>>(), ListObserver<T> {
+interface ObservableList<E : Observable?> : Observable {
 
-    override fun onChanged(t: MutableList<T>) {
-        traversal { observer -> observer.onChanged(t) }
-    }
+    /**
+     * 更新列表
+     */
+    fun change(list: List<E>): Boolean
 
-    override fun onUpdated(patches: Array<Patch>) {
-        traversal { observer -> observer.onUpdated(patches) }
-    }
+    /**
+     * 插入数据
+     */
+    fun insert(position: Int, list: List<E>): Boolean
 
-    override fun onInsert(position: Int, addList: MutableList<T>) {
-        traversal { observer -> observer.onInsert(position, addList) }
-    }
+    /**
+     * 删除数据
+     */
+    fun remove(position: Int, range: Int): Boolean
 
-    override fun onRemove(position: Int, range: Int) {
-        traversal { observer -> observer.onRemove(position, range) }
-    }
-
-    override fun onItemUpdate(position: Int, patches: Array<Patch>) {
-        traversal { observer -> observer.onItemUpdate(position, patches) }
-    }
+    /**
+     * 获取元素
+     */
+    fun get(position: Int): E?
 }

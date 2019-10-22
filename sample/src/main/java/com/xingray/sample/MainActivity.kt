@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.xingray.observer.ListObserver
-import com.xingray.observer.Observer
 import com.xingray.observer.Patch
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -23,48 +22,25 @@ class MainActivity : AppCompatActivity() {
     fun test() {
         val roomManager = RoomManager()
 
-        roomManager.addObserver(null, object : Observer<Room> {
-            override fun onChanged(t: Room) {
-                log("1 onChanged: $t")
-            }
-
-            override fun onUpdated(patches: Array<Patch>) {
-                log("2 onUpdated: " + patches.contentToString())
-            }
-        })
-
-        roomManager.addListObserver(null, object : ListObserver<Student> {
-
-            override fun onChanged(t: MutableList<Student>) {
-                log("3 onChanged: $t")
-            }
-
-            override fun onUpdated(patches: Array<Patch>) {
-                log("4 onUpdated: " + patches.contentToString())
-            }
-
-            override fun onInsert(position: Int, addList: MutableList<Student>) {
-                log(
-                    "5 onInsert: "
-                            + "\nposition: " + position
-                            + "\naddList: " + addList
-                )
+        roomManager.addObserver(TaskExecutor.uiPool(), object : ListObserver<Student, Room> {
+            override fun onInsert(position: Int, insertList: List<Student>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onRemove(position: Int, range: Int) {
-                log(
-                    ("6 onRemove: "
-                            + "\nposition: " + position
-                            + "\nrange: " + range)
-                )
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun onItemUpdate(position: Int, patches: Array<Patch>) {
-                log(
-                    ("7 onItemUpdate: "
-                            + "\nposition: " + position
-                            + "\npatches: " + patches.contentToString())
-                )
+            override fun onItemUpdate(position: Int, patches: List<Patch>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onChanged(t: Room?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onUpdated(patches: List<Patch>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
 

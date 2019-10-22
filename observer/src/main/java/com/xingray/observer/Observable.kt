@@ -1,20 +1,14 @@
 package com.xingray.observer
 
 /**
- * 可观察者
+ * 可观察对象
  *
  * @author : leixing
+ * @date : 2019/10/21 22:10
  * @version : 1.0.0
  * mail : leixing1012@qq.com
- * @date : 2019/9/8 13:35
+ *
  */
-class Observable<T> : ObserverManager<Observer<T>>(), Observer<T> {
-
-    override fun onChanged(t: T) {
-        traversal { observer -> observer.onChanged(t) }
-    }
-
-    override fun onUpdated(patches: Array<Patch>) {
-        traversal { observer -> observer.onUpdated(patches) }
-    }
+interface Observable {
+    fun applyPatches(patches: List<Patch>): List<Patch>?
 }
