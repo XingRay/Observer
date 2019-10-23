@@ -20,7 +20,37 @@ class Student(
     }
 
     override fun applyPatches(patches: List<Patch>): List<Patch>? {
-        return null
+        var appliedPatches: MutableList<Patch>? = null
+
+        patches.forEach {
+            var applied = false
+            when (it.name) {
+
+                FIELD_AGE -> {
+                    val age: Int = it.getPayload()
+                    if (this.age != age) {
+                        this.age = age
+                        applied = true
+                    }
+                }
+
+                FIELD_NAME -> {
+                    val name: String = it.getPayload()
+                    if (this.name != name) {
+                        this.name = name
+                        applied = true
+                    }
+                }
+            }
+            if (applied) {
+                if (appliedPatches == null) {
+                    appliedPatches = mutableListOf()
+                }
+                appliedPatches?.add(it)
+            }
+        }
+
+        return appliedPatches
     }
 
     companion object {

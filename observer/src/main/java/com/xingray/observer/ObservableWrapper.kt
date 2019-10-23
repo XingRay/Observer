@@ -13,7 +13,7 @@ open class ObservableWrapper<T : Observable>(var t: T?) {
     constructor() : this(null)
 
     fun set(t: T?): Boolean {
-        if (this.t == t) {
+        if (this.t === t) {
             return false
         }
         this.t = t

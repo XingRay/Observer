@@ -7,9 +7,12 @@ package com.xingray.observer
  */
 interface ListObserver<E : Observable?, T : ObservableList<E>> : Observer<T> {
 
-    fun onInsert(position: Int, insertList: List<E>)
+    fun onListChanged(list: List<E>)
 
-    fun onRemove(position: Int, range: Int)
+    fun onListInserted(position: Int, insertList: List<E>)
 
-    fun onItemUpdate(position: Int, patches: List<Patch>)
+    fun onListRemoved(position: Int, range: Int)
+
+    fun onListItemUpdated(position: Int, appliedPatches: List<Patch>)
+
 }

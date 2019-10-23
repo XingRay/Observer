@@ -16,6 +16,9 @@ open class ObservableData<T : Observable, O : Observer<in T>>(
     private val dataWrapper: ObservableWrapper<in T>
 ) {
 
+    constructor(t: T?) : this(ObservableWrapper(t))
+    constructor() : this(null)
+
     val observers by lazy { SetMap<Executor, O>() }
 
     fun set(t: T?): Boolean {

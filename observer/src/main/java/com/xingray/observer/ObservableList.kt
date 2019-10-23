@@ -14,7 +14,7 @@ interface ObservableList<E : Observable?> : Observable {
     /**
      * 更新列表
      */
-    fun change(list: List<E>): Boolean
+    fun change(list: MutableList<E>): Boolean
 
     /**
      * 插入数据
