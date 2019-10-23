@@ -1,6 +1,7 @@
 package com.xingray.sample
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,6 +18,10 @@ import java.util.*
 import kotlinx.android.synthetic.main.item_main_student_list.tvName as tvStudentName
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
 
     private var adapter: RecyclerAdapter? = null
     private val roomManager = RoomManager()
@@ -70,30 +75,42 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun init() {
+    private fun init() {
 
         roomManager.addObserver(TaskExecutor.uiPool(), object : ListObserver<Student, Room> {
+
             override fun onListInserted(position: Int, insertList: List<Student>) {
+                Log.i(TAG, "onListInserted: $position  $insertList")
                 adapter?.add(position, insertList)
             }
 
             override fun onListChanged(list: List<Student>) {
+                Log.i(TAG, "onListChanged: $list")
                 adapter?.update(list)
             }
 
             override fun onListRemoved(position: Int, range: Int) {
+                Log.i(TAG, "onListRemoved: $position  $range")
                 adapter?.remove(position, range)
             }
 
             override fun onListItemUpdated(position: Int, appliedPatches: List<Patch>) {
+                Log.i(TAG, "onListItemUpdated: $position  $appliedPatches")
                 adapter?.notifyItemChanged(position, appliedPatches)
             }
 
             override fun onChanged(t: Room?) {
-                showRoom(t)
+                Log.i(TAG, "onChanged: $t")
+
+                tvName.text = t?.name ?: ""
+                tvArea.text = t?.area.toString()
+                tvId.text = t?.id ?: ""
+
+                adapter?.update(t?.students)
             }
 
             override fun onUpdated(patches: List<Patch>) {
+                Log.i(TAG, "onUpdated: $patches")
                 patches.forEach {
                     when (it.name) {
                         Room.FIELD_ID -> {
@@ -114,14 +131,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun showRoom(t: Room?) {
-        tvName.text = t?.name ?: ""
-        tvArea.text = t?.area.toString()
-        tvId.text = t?.id ?: ""
-
-        adapter?.update(t?.students)
-    }
-
     @LayoutId(R.layout.item_main_student_list)
     class StudentViewHolder(view: View) : ViewHolder<Student>(view), LayoutContainer {
 
@@ -139,17 +148,18 @@ class MainActivity : AppCompatActivity() {
 
         override fun onRefreshItemView(payloads: List<Any>) {
             super.onRefreshItemView(payloads)
-            payloads.forEach {
-                if (it is List<*>) {
-                    val patches: List<Patch> = it as List<Patch>
-                    patches.forEach {
-                        when (it.name) {
+            payloads.forEach { payload ->
+                if (payload is List<*>) {
+                    @Suppress("UNCHECKED_CAST")
+                    val patches: List<Patch> = payload as List<Patch>
+                    patches.forEach { patch ->
+                        when (patch.name) {
                             Student.FIELD_NAME -> {
-                                val name: String = it.getPayload()
+                                val name: String = patch.getPayload()
                                 tvStudentName.text = name
                             }
                             Student.FIELD_AGE -> {
-                                val age: Int = it.getPayload()
+                                val age: Int = patch.getPayload()
                                 tvAge.text = age.toString()
                             }
                         }
