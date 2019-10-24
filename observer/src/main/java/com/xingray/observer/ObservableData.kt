@@ -12,8 +12,8 @@ import java.util.concurrent.Executor
  * mail : leixing1012@qq.com
  * @date : 2019/9/8 13:36
  */
-open class ObservableData<T : Observable, O : Observer<in T>>(
-    private val dataWrapper: ObservableWrapper<in T>
+open class ObservableData<T : Observable, O : Observer<T>>(
+    private val dataWrapper: ObservableWrapper<T>
 ) {
 
     constructor(t: T?) : this(ObservableWrapper(t))
@@ -21,6 +21,10 @@ open class ObservableData<T : Observable, O : Observer<in T>>(
     constructor() : this(null)
 
     val observers by lazy { SetMap<Executor, O>() }
+
+    fun get(): T? {
+        return dataWrapper.t
+    }
 
     fun set(t: T?): Boolean {
         val set = dataWrapper.set(t)

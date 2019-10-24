@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         bt01.setOnClickListener {
             val room = Room("room001", "r001", 100)
-            roomManager.setRoom(room)
+            roomManager.room = room
             val students: MutableList<Student> = ArrayList()
             roomManager.setStudents(students)
         }
@@ -58,7 +58,9 @@ class MainActivity : AppCompatActivity() {
             roomManager.updateStudent(2, "yyy", 21)
         }
 
-        init()
+        initObservers()
+
+        showRoom(roomManager.room)
     }
 
     private fun initList() {
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun init() {
+    private fun initObservers() {
 
         roomManager.addObserver(TaskExecutor.uiPool(), object : ListObserver<Student, Room> {
 
@@ -101,12 +103,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onChanged(t: Room?) {
                 Log.i(TAG, "onChanged: $t")
-
-                tvName.text = t?.name ?: ""
-                tvArea.text = t?.area.toString()
-                tvId.text = t?.id ?: ""
-
-                adapter?.update(t?.students)
+                showRoom(t)
             }
 
             override fun onUpdated(patches: List<Patch>) {
@@ -129,6 +126,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun showRoom(t: Room?) {
+        tvName.text = t?.name ?: ""
+        tvArea.text = t?.area.toString()
+        tvId.text = t?.id ?: ""
+
+        adapter?.update(t?.students)
     }
 
     @LayoutId(R.layout.item_main_student_list)

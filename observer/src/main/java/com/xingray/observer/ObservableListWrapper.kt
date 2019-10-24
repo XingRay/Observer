@@ -8,16 +8,16 @@ package com.xingray.observer
  * mail : leixing1012@qq.com
  * @date : 2019/9/8 13:39
  */
-class ObservableListWrapper<T : Observable?>(list: ObservableList<T>?) :
-    ObservableWrapper<ObservableList<T>>(list) {
+class ObservableListWrapper<E : Observable, T : ObservableList<E>>(list: T?) :
+    ObservableWrapper<T>(list) {
 
     constructor() : this(null)
 
-    fun change(list: MutableList<T>): Boolean {
+    fun change(list: MutableList<E>): Boolean {
         return this.t?.change(list) ?: false
     }
 
-    fun insert(position: Int, list: List<T>): Boolean {
+    fun insert(position: Int, list: List<E>): Boolean {
         return this.t?.insert(position, list) ?: false
     }
 

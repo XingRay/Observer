@@ -10,7 +10,7 @@ package com.xingray.observer
  *
  */
 class ObservableListData<E : Observable, T : ObservableList<E>>(
-    private val listDataWrapper: ObservableListWrapper<E>
+    private val listDataWrapper: ObservableListWrapper<E, T>
 ) : ObservableData<T, ListObserver<E, T>>(listDataWrapper) {
 
     constructor(t: T?) : this(ObservableListWrapper(t))
