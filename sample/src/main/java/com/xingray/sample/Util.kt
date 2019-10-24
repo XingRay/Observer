@@ -1,7 +1,5 @@
 package com.xingray.sample
 
-import com.xingray.observer.Patch
-
 /**
  * xxx
  *
