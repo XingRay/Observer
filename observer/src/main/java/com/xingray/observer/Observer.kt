@@ -8,5 +8,5 @@ interface Observer<T> {
 
     fun onChanged(t: T?)
 
-    fun onUpdated(patches: List<Patch>)
+    fun onUpdated(patch: Patch)
 }

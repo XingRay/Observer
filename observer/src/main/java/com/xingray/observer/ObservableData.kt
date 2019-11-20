@@ -22,6 +22,14 @@ open class ObservableData<T : Observable, O : Observer<T>>(
 
     val observers by lazy { SetMap<Executor, O>() }
 
+    open fun addObserver(executor: Executor, observer: O) {
+        observers.add(executor, observer)
+    }
+
+    open fun removeObserver(observer: O) {
+        observers.remove(observer)
+    }
+
     fun get(): T? {
         return dataWrapper.t
     }
@@ -39,18 +47,22 @@ open class ObservableData<T : Observable, O : Observer<T>>(
     fun update(patches: List<Patch>?): List<Patch>? {
         val appliedPatches = dataWrapper.update(patches)
         if (appliedPatches?.isNotEmpty() == true) {
-            observers.traverseOnExecutor {
-                it.onUpdated(appliedPatches)
+            observers.traverseOnExecutor { observer ->
+                appliedPatches.forEach { patch ->
+                    observer.onUpdated(patch)
+                }
             }
         }
         return appliedPatches
     }
 
-    open fun addObserver(executor: Executor, observer: O) {
-        observers.add(executor, observer)
-    }
-
-    open fun removeObserver(observer: O) {
-        observers.remove(observer)
+    fun update(patch: Patch): Boolean {
+        val applied = dataWrapper.update(patch)
+        if (applied) {
+            observers.traverseOnExecutor { observer ->
+                observer.onUpdated(patch)
+            }
+        }
+        return applied
     }
 }

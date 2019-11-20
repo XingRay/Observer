@@ -17,10 +17,10 @@ class Patch internal constructor(val name: String, private val payload: Any) {
     }
 
     override fun toString(): String {
-        return "Patch{" +
-                "name=" + name +
-                ", payload=" + payload +
-                '}'.toString()
+        return "{" +
+                "name:" + name +
+                ", payload:" + payload +
+                '}'
     }
 
     class Builder {

@@ -5,14 +5,17 @@ package com.xingray.observer
  *
  * @param <T> 数据类型
  */
-interface ListObserver<E : Observable?, T : ObservableList<E>> : Observer<T> {
+interface ListObserver<E : Observable, T : ObservableList<E>> : Observer<T> {
 
-    fun onListChanged(list: List<E>)
+    fun onListChanged(list: List<E?>?)
 
-    fun onListInserted(position: Int, insertList: List<E>)
+    fun onItemChanged(position: Int, e: E?)
 
-    fun onListRemoved(position: Int, range: Int)
+    fun onItemUpdated(position: Int, appliedPatch: Patch)
 
-    fun onListItemUpdated(position: Int, appliedPatches: List<Patch>)
+    fun onItemsInserted(position: Int, insertList: List<E?>)
 
+    fun onItemsRemoved(position: Int, range: Int)
+
+    fun onItemsMoved(fromIndex: Int, toIndex: Int, size: Int)
 }

@@ -5,7 +5,13 @@ import com.xingray.observer.Patch
 
 class Room(var name: String, var id: String, var area: Int) : ObservableList<Student> {
 
-    var students: MutableList<Student>? = null
+    companion object {
+        var FIELD_NAME = "Room#name"
+        var FIELD_ID = "Room#id"
+        var FIELD_AREA = "Room#area"
+    }
+
+    val students by lazy { mutableListOf<Student?>() }
 
     override fun toString(): String {
         return "Room{" +
@@ -16,73 +22,66 @@ class Room(var name: String, var id: String, var area: Int) : ObservableList<Stu
                 '}'.toString()
     }
 
-    override fun change(list: MutableList<Student>): Boolean {
+    override fun changeList(list: MutableList<Student?>?): Boolean {
         if (students === list) {
             return false
         }
-        students = list
+        students.clear()
+        if (list != null) {
+            students.addAll(list)
+        }
         return true
     }
 
-    override fun insert(position: Int, list: List<Student>): Boolean {
-        students?.addAll(position, list) ?: return false
-        return true
+    override fun insertItems(position: Int, list: List<Student?>): Boolean {
+        return students.addAll(position, list)
     }
 
-    override fun remove(position: Int, range: Int): Boolean {
-        val removeCount = students?.remove(position, range) ?: return false
+    override fun removeItems(position: Int, range: Int): Boolean {
+        val removeCount = students.remove(position, range)
         return removeCount > 0
     }
 
-    override fun get(position: Int): Student? {
-        return students?.get(position)
+    override fun getItem(position: Int): Student? {
+        return students[position]
     }
 
-    override fun applyPatches(patches: List<Patch>): List<Patch>? {
-        var appliedPatches: MutableList<Patch>? = null
+    override fun setItem(position: Int, e: Student?): Student? {
+        val previous = students[position]
+        students[position] = e
+        return previous
+    }
 
-        patches.forEach {
-            var applied = false
-            when (it.name) {
-                FIELD_NAME -> {
-                    val name: String = it.getPayload()
-                    if (this.name != name) {
-                        this.name = name
-                        applied = true
-                    }
-                }
+    override fun size(): Int {
+        return students.size
+    }
 
-                FIELD_AREA -> {
-                    val area: Int = it.getPayload()
-                    if (this.area != area) {
-                        this.area = area
-                        applied = true
-                    }
-                }
-
-                FIELD_ID -> {
-                    val id: String = it.getPayload()
-                    if (this.id != id) {
-                        this.id = id
-                        applied = true
-                    }
+    override fun applyPatch(patch: Patch): Boolean {
+        when (patch.name) {
+            FIELD_NAME -> {
+                val name: String = patch.getPayload()
+                if (this.name != name) {
+                    this.name = name
+                    return true
                 }
             }
 
-            if (applied) {
-                if (appliedPatches == null) {
-                    appliedPatches = mutableListOf()
+            FIELD_AREA -> {
+                val area: Int = patch.getPayload()
+                if (this.area != area) {
+                    this.area = area
+                    return true
                 }
-                appliedPatches?.add(it)
+            }
+
+            FIELD_ID -> {
+                val id: String = patch.getPayload()
+                if (this.id != id) {
+                    this.id = id
+                    return true
+                }
             }
         }
-
-        return appliedPatches
-    }
-
-    companion object {
-        var FIELD_NAME = "name"
-        var FIELD_ID = "id"
-        var FIELD_AREA = "area"
+        return false
     }
 }

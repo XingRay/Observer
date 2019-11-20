@@ -28,4 +28,9 @@ open class ObservableWrapper<T : Observable>(var t: T?) {
         val t: T = this.t ?: return null
         return t.applyPatches(patches)
     }
+
+    fun update(patch: Patch): Boolean {
+        val t: T = this.t ?: return false
+        return t.applyPatch(patch)
+    }
 }

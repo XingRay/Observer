@@ -81,24 +81,35 @@ class MainActivity : AppCompatActivity() {
 
         roomManager.addObserver(TaskExecutor.uiPool(), object : ListObserver<Student, Room> {
 
-            override fun onListInserted(position: Int, insertList: List<Student>) {
+            override fun onItemChanged(position: Int, e: Student?) {
+                Log.i(TAG, "onListItemChanged: $position  $e")
+                adapter?.notifyItemChanged(position, e)
+            }
+
+            override fun onItemsInserted(position: Int, insertList: List<Student?>) {
                 Log.i(TAG, "onListInserted: $position  $insertList")
                 adapter?.add(position, insertList)
             }
 
-            override fun onListChanged(list: List<Student>) {
+            override fun onListChanged(list: List<Student?>?) {
                 Log.i(TAG, "onListChanged: $list")
-                adapter?.update(list)
+                @Suppress("UNCHECKED_CAST")
+                adapter?.update(list as List<Student>)
             }
 
-            override fun onListRemoved(position: Int, range: Int) {
+            override fun onItemsRemoved(position: Int, range: Int) {
                 Log.i(TAG, "onListRemoved: $position  $range")
                 adapter?.remove(position, range)
             }
 
-            override fun onListItemUpdated(position: Int, appliedPatches: List<Patch>) {
-                Log.i(TAG, "onListItemUpdated: $position  $appliedPatches")
-                adapter?.notifyItemChanged(position, appliedPatches)
+            override fun onItemUpdated(position: Int, appliedPatch: Patch) {
+                Log.i(TAG, "onListItemUpdated: $position  $appliedPatch")
+                adapter?.notifyItemChanged(position, appliedPatch)
+            }
+
+            override fun onItemsMoved(fromIndex: Int, toIndex: Int, size: Int) {
+                Log.i(TAG, "onItemsMoved: $fromIndex  $toIndex $size")
+                adapter?.notifyItemMoved(fromIndex, toIndex)
             }
 
             override fun onChanged(t: Room?) {
@@ -106,22 +117,20 @@ class MainActivity : AppCompatActivity() {
                 showRoom(t)
             }
 
-            override fun onUpdated(patches: List<Patch>) {
-                Log.i(TAG, "onUpdated: $patches")
-                patches.forEach {
-                    when (it.name) {
-                        Room.FIELD_ID -> {
-                            val id: String = it.getPayload()
-                            tvId.text = id
-                        }
-                        Room.FIELD_AREA -> {
-                            val area: Int = it.getPayload()
-                            tvArea.text = area.toString()
-                        }
-                        Room.FIELD_NAME -> {
-                            val name: String = it.getPayload()
-                            tvName.text = name
-                        }
+            override fun onUpdated(patch: Patch) {
+                Log.i(TAG, "onUpdated: $patch")
+                when (patch.name) {
+                    Room.FIELD_ID -> {
+                        val id: String = patch.getPayload()
+                        tvId.text = id
+                    }
+                    Room.FIELD_AREA -> {
+                        val area: Int = patch.getPayload()
+                        tvArea.text = area.toString()
+                    }
+                    Room.FIELD_NAME -> {
+                        val name: String = patch.getPayload()
+                        tvName.text = name
                     }
                 }
             }
@@ -133,31 +142,24 @@ class MainActivity : AppCompatActivity() {
         tvArea.text = t?.area.toString()
         tvId.text = t?.id ?: ""
 
-        adapter?.update(t?.students)
+        val students = t?.students?.filterNotNull()
+
+        adapter?.update(students)
     }
 
     @LayoutId(R.layout.item_main_student_list)
     class StudentViewHolder(view: View) : ViewHolder<Student>(view), LayoutContainer {
 
         override fun onBindItemView(t: Student, position: Int) {
-            tvStudentName.text = t.name
-            tvSex.text = if (t.sex == 0) {
-                "男"
-            } else {
-                "女"
-            }
-            tvAge.text = t.age.toString()
-            tvMark.text = t.mark.toString()
-
+            showStudent(t)
         }
 
         override fun onRefreshItemView(payloads: List<Any>) {
             super.onRefreshItemView(payloads)
             payloads.forEach { payload ->
-                if (payload is List<*>) {
-                    @Suppress("UNCHECKED_CAST")
-                    val patches: List<Patch> = payload as List<Patch>
-                    patches.forEach { patch ->
+                when (payload) {
+                    is Patch -> {
+                        val patch: Patch = payload
                         when (patch.name) {
                             Student.FIELD_NAME -> {
                                 val name: String = patch.getPayload()
@@ -169,9 +171,23 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
+
+                    is Student -> {
+                        showStudent(payload)
+                    }
                 }
             }
+        }
 
+        private fun showStudent(t: Student) {
+            tvStudentName.text = t.name
+            tvSex.text = if (t.sex == 0) {
+                "男"
+            } else {
+                "女"
+            }
+            tvAge.text = t.age.toString()
+            tvMark.text = t.mark.toString()
         }
 
         override val containerView: View?

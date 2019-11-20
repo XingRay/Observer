@@ -28,3 +28,38 @@ fun <V> SetMap<Executor, V>.traverseOnExecutor(processor: (V) -> Unit) {
         }
     }
 }
+
+fun <E : Observable> ObservableList<E>.move(fromIndex: Int, toIndex: Int, size: Int): Boolean {
+    if (fromIndex == toIndex
+        || size <= 0
+        || isOutOfIndex(fromIndex)
+        || isOutOfIndex(fromIndex + size)
+        || isOutOfIndex(toIndex)
+        || isOutOfIndex(toIndex + size)
+    ) {
+        return false
+    }
+
+    val items = List(size) { index -> getItem(index) }
+    if (fromIndex > toIndex) {
+        for (i in fromIndex + size - 1 downTo toIndex + size) {
+            setItem(i, getItem(i - size))
+        }
+    } else {
+        for (i in fromIndex until toIndex) {
+            setItem(i, getItem(i + size))
+        }
+    }
+    for (i in 0 until size) {
+        setItem(toIndex + i, items[i])
+    }
+    return true
+}
+
+fun <E : Observable> ObservableList<E>.isOutOfIndex(index: Int): Boolean {
+    return index < 0 || index >= size()
+}
+
+fun <E : Observable> ObservableList<E>.swap(i: Int, j: Int) {
+    setItem(i, setItem(j, getItem(i)))
+}

@@ -10,6 +10,11 @@ class Student(
     var mark: Int
 ) : Observable {
 
+    companion object {
+        var FIELD_NAME: String = "Student#name"
+        var FIELD_AGE: String = "Student#age"
+    }
+
     override fun toString(): String {
         return "Student{" +
                 "name='" + name + '\''.toString() +
@@ -19,42 +24,26 @@ class Student(
                 '}'.toString()
     }
 
-    override fun applyPatches(patches: List<Patch>): List<Patch>? {
-        var appliedPatches: MutableList<Patch>? = null
+    override fun applyPatch(patch: Patch): Boolean {
+        when (patch.name) {
 
-        patches.forEach {
-            var applied = false
-            when (it.name) {
-
-                FIELD_AGE -> {
-                    val age: Int = it.getPayload()
-                    if (this.age != age) {
-                        this.age = age
-                        applied = true
-                    }
-                }
-
-                FIELD_NAME -> {
-                    val name: String = it.getPayload()
-                    if (this.name != name) {
-                        this.name = name
-                        applied = true
-                    }
+            FIELD_AGE -> {
+                val age: Int = patch.getPayload()
+                if (this.age != age) {
+                    this.age = age
+                    return true
                 }
             }
-            if (applied) {
-                if (appliedPatches == null) {
-                    appliedPatches = mutableListOf()
+
+            FIELD_NAME -> {
+                val name: String = patch.getPayload()
+                if (this.name != name) {
+                    this.name = name
+                    return true
                 }
-                appliedPatches?.add(it)
             }
         }
 
-        return appliedPatches
-    }
-
-    companion object {
-        var FIELD_NAME: String = "name"
-        var FIELD_AGE: String = "age"
+        return false
     }
 }

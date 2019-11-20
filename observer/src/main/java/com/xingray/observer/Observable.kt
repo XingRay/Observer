@@ -10,5 +10,22 @@ package com.xingray.observer
  *
  */
 interface Observable {
-    fun applyPatches(patches: List<Patch>): List<Patch>?
+
+    fun applyPatches(patches: List<Patch>?): List<Patch>? {
+        if (patches == null || patches.isEmpty()) {
+            return null
+        }
+        var appliedPatches: MutableList<Patch>? = null
+        for (patch in patches) {
+            if (applyPatch(patch)) {
+                if (appliedPatches == null) {
+                    appliedPatches = mutableListOf()
+                }
+                appliedPatches.add(patch)
+            }
+        }
+        return appliedPatches
+    }
+
+    fun applyPatch(patch: Patch): Boolean
 }

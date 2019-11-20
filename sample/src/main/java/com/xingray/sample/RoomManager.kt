@@ -27,18 +27,19 @@ class RoomManager {
     }
 
     fun setStudents(students: MutableList<Student>) {
-        roomData.changeList(students)
+        @Suppress("UNCHECKED_CAST")
+        roomData.changeItems(students as MutableList<Student?>)
     }
 
     fun addStudents(students: List<Student>) {
-        roomData.insertList(0, students)
+        roomData.insertItems(0, students)
     }
 
     fun updateStudent(position: Int, name: String, age: Int) {
         val patches = Patch.builder()
             .add(Student.FIELD_NAME, name)
             .add(Student.FIELD_AGE, age).build()
-        roomData.updateListItem(position, patches)
+        roomData.updateItem(position, patches)
     }
 
     fun addObserver(executor: Executor, observer: ListObserver<Student, Room>) {

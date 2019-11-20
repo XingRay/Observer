@@ -9,25 +9,35 @@ package com.xingray.observer
  * mail : leixing1012@qq.com
  *
  */
-interface ObservableList<E : Observable?> : Observable {
+interface ObservableList<E : Observable> : Observable {
 
     /**
-     * 更新列表
+     * 获取指定位置数据
      */
-    fun change(list: MutableList<E>): Boolean
+    fun getItem(position: Int): E?
+
+    /**
+     * 设置指定位置数据
+     */
+    fun setItem(position: Int, e: E?): E?
+
+    /**
+     * 获取列表元素数量
+     */
+    fun size(): Int
+
+    /**
+     * 替换整个列表
+     */
+    fun changeList(list: MutableList<E?>?): Boolean
 
     /**
      * 插入数据
      */
-    fun insert(position: Int, list: List<E>): Boolean
+    fun insertItems(position: Int, items: List<E?>): Boolean
 
     /**
      * 删除数据
      */
-    fun remove(position: Int, range: Int): Boolean
-
-    /**
-     * 获取元素
-     */
-    fun get(position: Int): E?
+    fun removeItems(position: Int, range: Int): Boolean
 }
