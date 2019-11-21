@@ -108,6 +108,9 @@ class MainActivity : AppCompatActivity() {
 
             override fun onItemsMoved(fromIndex: Int, toIndex: Int, size: Int) {
                 Log.i(TAG, "onItemsMoved: $fromIndex  $toIndex $size")
+                if (size != 1) {
+                    throw IllegalArgumentException("Moving more than 1 item is not supported yet")
+                }
                 adapter?.notifyItemMoved(fromIndex, toIndex)
             }
 
