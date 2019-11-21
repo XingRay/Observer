@@ -140,11 +140,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showRoom(t: Room?) {
-        tvName.text = t?.name ?: ""
-        tvArea.text = t?.area.toString()
-        tvId.text = t?.id ?: ""
+        tvName.text = t?.name?.toString()
+        tvArea.text = t?.area?.toString()
+        tvId.text = t?.id?.toString()
 
-        val students = t?.students?.filterNotNull()
+        val students = t?.students?.get()?.filterNotNull()
 
         adapter?.update(students)
     }
@@ -179,8 +179,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         private fun showStudent(t: Student) {
-            tvStudentName.text = t.name
-            tvSex.text = if (t.sex == 0) {
+            tvStudentName.text = t.name.toString()
+            tvSex.text = if (t.sex.get() == 0) {
                 "男"
             } else {
                 "女"

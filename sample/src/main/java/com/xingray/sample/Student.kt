@@ -2,13 +2,19 @@ package com.xingray.sample
 
 import com.xingray.observer.Observable
 import com.xingray.observer.Patch
+import com.xingray.observer.field.ObservableField
 
 class Student(
-    var name: String,
-    var sex: Int,
-    var age: Int,
-    var mark: Int
+    name: String,
+    sex: Int,
+    age: Int,
+    mark: Int
 ) : Observable {
+
+    val name = ObservableField(name)
+    val sex = ObservableField(sex)
+    val age = ObservableField(age)
+    val mark = ObservableField(mark)
 
     companion object {
         var FIELD_NAME: String = "Student#name"
@@ -26,26 +32,14 @@ class Student(
 
     override fun applyPatch(patch: Patch): Pair<Boolean, Any?>? {
         when (patch.name) {
-
             FIELD_AGE -> {
-                val age: Int = patch.getPayload()
-                val last = this.age
-                if (last != age) {
-                    this.age = age
-                    return Pair(true, last)
-                }
+                return age.set(patch.getPayload())
             }
 
             FIELD_NAME -> {
-                val name: String = patch.getPayload()
-                val last = this.name
-                if (last != name) {
-                    this.name = name
-                    return Pair(true, last)
-                }
+                return name.set(patch.getPayload())
             }
         }
-
         return null
     }
 }
