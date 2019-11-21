@@ -13,8 +13,8 @@ class ObservableListWrapper<E : Observable, T : ObservableList<E>>(list: T?) :
 
     constructor() : this(null)
 
-    fun change(list: MutableList<E?>?): Boolean {
-        return t?.changeList(list) ?: false
+    fun change(list: MutableList<E?>?): Pair<Boolean, List<E?>?>? {
+        return t?.changeList(list)
     }
 
     fun insert(position: Int, list: List<E?>): Boolean {
@@ -25,7 +25,7 @@ class ObservableListWrapper<E : Observable, T : ObservableList<E>>(list: T?) :
         return t?.removeItems(position, range) ?: false
     }
 
-    fun updateItem(position: Int, patches: List<Patch>?): List<Patch>? {
+    fun updateItem(position: Int, patches: List<Patch>?): List<Pair<Patch, Any?>>? {
         if (patches == null || patches.isEmpty()) {
             return null
         }
@@ -33,34 +33,36 @@ class ObservableListWrapper<E : Observable, T : ObservableList<E>>(list: T?) :
         return list.getItem(position)?.applyPatches(patches)
     }
 
-    fun updateItem(position: Int, patch: Patch): Boolean {
-        val list = t ?: return false
-        val item = list.getItem(position) ?: return false
+    fun updateItem(position: Int, patch: Patch): Pair<Boolean, Any?>? {
+        val list = t ?: return null
+        val item = list.getItem(position) ?: return null
         return item.applyPatch(patch)
     }
 
-    fun setItem(position: Int, e: E?): Boolean {
-        val list = t ?: return false
+    fun setItem(position: Int, e: E?): Pair<Boolean, E?>? {
+        val list = t ?: return null
         val value = list.getItem(position)
         if (value === e) {
-            return false
+            return null
         }
 
-        list.setItem(position, e)
-        return true
+        return list.setItem(position, e)
     }
 
-    fun setItems(position: Int, items: List<E?>): Pair<Boolean, BooleanArray> {
-        val itemsChanged = BooleanArray(items.size)
-        var changed = false
+    fun setItems(position: Int, items: List<E?>): Array<Pair<Boolean, E?>?>? {
+        var pairs: Array<Pair<Boolean, E?>?>? = null
 
         for (i in items.indices) {
-            val set = setItem(position + i, items[i])
-            itemsChanged[i] = set
-            changed = changed || set
+            val pair = setItem(position + i, items[i])
+            if (pair != null && pair.first) {
+                if (pairs == null) {
+                    pairs = Array(items.size) { null }
+                }
+                pairs[i] = pair
+            }
         }
 
-        return Pair(changed, itemsChanged)
+        return pairs
     }
 
     fun moveItems(fromIndex: Int, toIndex: Int, size: Int): Boolean {

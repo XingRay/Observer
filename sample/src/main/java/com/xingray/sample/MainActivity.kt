@@ -81,9 +81,9 @@ class MainActivity : AppCompatActivity() {
 
         roomManager.addObserver(TaskExecutor.uiPool(), object : ListObserver<Student, Room> {
 
-            override fun onItemChanged(position: Int, e: Student?) {
-                Log.i(TAG, "onListItemChanged: $position  $e")
-                adapter?.notifyItemChanged(position, e)
+            override fun onItemChanged(position: Int, current: Student?, last: Student?) {
+                Log.i(TAG, "onListItemChanged: $position  $current $last")
+                adapter?.notifyItemChanged(position, current)
             }
 
             override fun onItemsInserted(position: Int, insertList: List<Student?>) {
@@ -91,10 +91,9 @@ class MainActivity : AppCompatActivity() {
                 adapter?.add(position, insertList)
             }
 
-            override fun onListChanged(list: List<Student?>?) {
-                Log.i(TAG, "onListChanged: $list")
-                @Suppress("UNCHECKED_CAST")
-                adapter?.update(list as List<Student>)
+            override fun onListChanged(current: List<Student?>?, last: List<Student?>?) {
+                Log.i(TAG, "onListChanged: $current $last")
+                adapter?.update(current)
             }
 
             override fun onItemsRemoved(position: Int, range: Int) {
@@ -102,8 +101,8 @@ class MainActivity : AppCompatActivity() {
                 adapter?.remove(position, range)
             }
 
-            override fun onItemUpdated(position: Int, appliedPatch: Patch) {
-                Log.i(TAG, "onListItemUpdated: $position  $appliedPatch")
+            override fun onItemUpdated(position: Int, appliedPatch: Patch, lastFiledValue: Any?) {
+                Log.i(TAG, "onListItemUpdated: $position  $appliedPatch $lastFiledValue")
                 adapter?.notifyItemChanged(position, appliedPatch)
             }
 
@@ -112,13 +111,13 @@ class MainActivity : AppCompatActivity() {
                 adapter?.notifyItemMoved(fromIndex, toIndex)
             }
 
-            override fun onChanged(t: Room?) {
-                Log.i(TAG, "onChanged: $t")
-                showRoom(t)
+            override fun onChanged(current: Room?, last: Room?) {
+                Log.i(TAG, "onChanged: $current $last")
+                showRoom(current)
             }
 
-            override fun onUpdated(patch: Patch) {
-                Log.i(TAG, "onUpdated: $patch")
+            override fun onUpdated(patch: Patch, lastFiledValue: Any?) {
+                Log.i(TAG, "onUpdated: $patch $lastFiledValue")
                 when (patch.name) {
                     Room.FIELD_ID -> {
                         val id: String = patch.getPayload()
@@ -154,27 +153,24 @@ class MainActivity : AppCompatActivity() {
             showStudent(t)
         }
 
-        override fun onRefreshItemView(payloads: List<Any>) {
-            super.onRefreshItemView(payloads)
-            payloads.forEach { payload ->
-                when (payload) {
-                    is Patch -> {
-                        val patch: Patch = payload
-                        when (patch.name) {
-                            Student.FIELD_NAME -> {
-                                val name: String = patch.getPayload()
-                                tvStudentName.text = name
-                            }
-                            Student.FIELD_AGE -> {
-                                val age: Int = patch.getPayload()
-                                tvAge.text = age.toString()
-                            }
+        override fun onRefreshItemView(payload: Any) {
+            when (payload) {
+                is Patch -> {
+                    val patch: Patch = payload
+                    when (patch.name) {
+                        Student.FIELD_NAME -> {
+                            val name: String = patch.getPayload()
+                            tvStudentName.text = name
+                        }
+                        Student.FIELD_AGE -> {
+                            val age: Int = patch.getPayload()
+                            tvAge.text = age.toString()
                         }
                     }
+                }
 
-                    is Student -> {
-                        showStudent(payload)
-                    }
+                is Student -> {
+                    showStudent(payload)
                 }
             }
         }

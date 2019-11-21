@@ -11,7 +11,7 @@ class Room(var name: String, var id: String, var area: Int) : ObservableList<Stu
         var FIELD_AREA = "Room#area"
     }
 
-    val students by lazy { mutableListOf<Student?>() }
+    var students: MutableList<Student?>? = null
 
     override fun toString(): String {
         return "Room{" +
@@ -22,66 +22,71 @@ class Room(var name: String, var id: String, var area: Int) : ObservableList<Stu
                 '}'.toString()
     }
 
-    override fun changeList(list: MutableList<Student?>?): Boolean {
+    override fun changeList(list: MutableList<Student?>?): Pair<Boolean, List<Student?>?>? {
         if (students === list) {
-            return false
+            return null
         }
-        students.clear()
-        if (list != null) {
-            students.addAll(list)
-        }
-        return true
+        val last = students
+        students = list
+        return Pair(true, last)
     }
 
-    override fun insertItems(position: Int, list: List<Student?>): Boolean {
-        return students.addAll(position, list)
+    override fun insertItems(position: Int, items: List<Student?>): Boolean {
+        return students?.addAll(position, items) ?: false
     }
 
     override fun removeItems(position: Int, range: Int): Boolean {
-        val removeCount = students.remove(position, range)
+        val removeCount = students?.remove(position, range) ?: return false
         return removeCount > 0
     }
 
     override fun getItem(position: Int): Student? {
-        return students[position]
+        return students?.get(position)
     }
 
-    override fun setItem(position: Int, e: Student?): Student? {
-        val previous = students[position]
-        students[position] = e
-        return previous
+    override fun setItem(position: Int, item: Student?): Pair<Boolean, Student?>? {
+        val list = students ?: return null
+        val last = list[position]
+        if (last === item) {
+            return null
+        }
+        list[position] = item
+        return Pair(true, last)
     }
 
     override fun size(): Int {
-        return students.size
+        return students?.size ?: 0
     }
 
-    override fun applyPatch(patch: Patch): Boolean {
+    override fun applyPatch(patch: Patch): Pair<Boolean, Any?>? {
         when (patch.name) {
             FIELD_NAME -> {
                 val name: String = patch.getPayload()
-                if (this.name != name) {
+                val last = this.name
+                if (last != name) {
                     this.name = name
-                    return true
+                    return Pair(true, last)
                 }
             }
 
             FIELD_AREA -> {
                 val area: Int = patch.getPayload()
-                if (this.area != area) {
+                val last = this.area
+                if (last != area) {
                     this.area = area
-                    return true
+                    return Pair(true, last)
                 }
             }
 
             FIELD_ID -> {
                 val id: String = patch.getPayload()
-                if (this.id != id) {
+                val last = this.id
+                if (last != id) {
                     this.id = id
-                    return true
+                    return Pair(true, last)
                 }
             }
         }
-        return false
+        return null
     }
 }

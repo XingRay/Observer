@@ -59,7 +59,3 @@ fun <E : Observable> ObservableList<E>.move(fromIndex: Int, toIndex: Int, size: 
 fun <E : Observable> ObservableList<E>.isOutOfIndex(index: Int): Boolean {
     return index < 0 || index >= size()
 }
-
-fun <E : Observable> ObservableList<E>.swap(i: Int, j: Int) {
-    setItem(i, setItem(j, getItem(i)))
-}

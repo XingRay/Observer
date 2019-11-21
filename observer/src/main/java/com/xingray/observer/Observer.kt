@@ -6,7 +6,7 @@ package com.xingray.observer
  */
 interface Observer<T> {
 
-    fun onChanged(t: T?)
+    fun onChanged(current: T?, last: T?)
 
-    fun onUpdated(patch: Patch)
+    fun onUpdated(patch: Patch, lastFiledValue: Any?)
 }

@@ -34,35 +34,35 @@ open class ObservableData<T : Observable, O : Observer<T>>(
         return dataWrapper.t
     }
 
-    fun set(t: T?): Boolean {
-        val set = dataWrapper.set(t)
-        if (set) {
+    fun set(t: T?): Pair<Boolean, T?>? {
+        val pair = dataWrapper.set(t)
+        if (pair != null && pair.first) {
             observers.traverseOnExecutor {
-                it.onChanged(t)
+                it.onChanged(t, pair.second)
             }
         }
-        return set
+        return pair
     }
 
-    fun update(patches: List<Patch>?): List<Patch>? {
+    fun update(patches: List<Patch>?): List<Pair<Patch, Any?>>? {
         val appliedPatches = dataWrapper.update(patches)
         if (appliedPatches?.isNotEmpty() == true) {
             observers.traverseOnExecutor { observer ->
-                appliedPatches.forEach { patch ->
-                    observer.onUpdated(patch)
+                appliedPatches.forEach { pair ->
+                    observer.onUpdated(pair.first, pair.second)
                 }
             }
         }
         return appliedPatches
     }
 
-    fun update(patch: Patch): Boolean {
-        val applied = dataWrapper.update(patch)
-        if (applied) {
+    fun update(patch: Patch): Pair<Boolean, Any?>? {
+        val pair = dataWrapper.update(patch)
+        if (pair != null && pair.first) {
             observers.traverseOnExecutor { observer ->
-                observer.onUpdated(patch)
+                observer.onUpdated(patch, pair.second)
             }
         }
-        return applied
+        return pair
     }
 }

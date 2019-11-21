@@ -2,14 +2,23 @@ package com.xingray.observer
 
 
 /**
- * 补丁
+ * 补丁，用于更新一个对象的属性/字段
  *
  * @author : leixing
  * @version : 1.0.0
  * mail : leixing1012@qq.com
  * @date : 2019/9/17 19:54
  */
-class Patch internal constructor(val name: String, private val payload: Any) {
+class Patch constructor(
+    /**
+     * 字段的名称
+     */
+    val name: String,
+    /**
+     * 更新的字段的值
+     */
+    private val payload: Any?
+) {
 
     fun <T> getPayload(): T {
         @Suppress("UNCHECKED_CAST")

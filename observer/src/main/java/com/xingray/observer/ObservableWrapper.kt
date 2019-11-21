@@ -12,15 +12,16 @@ open class ObservableWrapper<T : Observable>(var t: T?) {
 
     constructor() : this(null)
 
-    fun set(t: T?): Boolean {
+    fun set(t: T?): Pair<Boolean, T?>? {
         if (this.t === t) {
-            return false
+            return null
         }
+        val last = this.t
         this.t = t
-        return true
+        return Pair(true, last)
     }
 
-    fun update(patches: List<Patch>?): List<Patch>? {
+    fun update(patches: List<Patch>?): List<Pair<Patch, Any?>>? {
         if (patches == null || patches.isEmpty()) {
             return null
         }
@@ -29,8 +30,8 @@ open class ObservableWrapper<T : Observable>(var t: T?) {
         return t.applyPatches(patches)
     }
 
-    fun update(patch: Patch): Boolean {
-        val t: T = this.t ?: return false
+    fun update(patch: Patch): Pair<Boolean, Any?>? {
+        val t: T = this.t ?: return null
         return t.applyPatch(patch)
     }
 }

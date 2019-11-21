@@ -24,26 +24,28 @@ class Student(
                 '}'.toString()
     }
 
-    override fun applyPatch(patch: Patch): Boolean {
+    override fun applyPatch(patch: Patch): Pair<Boolean, Any?>? {
         when (patch.name) {
 
             FIELD_AGE -> {
                 val age: Int = patch.getPayload()
-                if (this.age != age) {
+                val last = this.age
+                if (last != age) {
                     this.age = age
-                    return true
+                    return Pair(true, last)
                 }
             }
 
             FIELD_NAME -> {
                 val name: String = patch.getPayload()
-                if (this.name != name) {
+                val last = this.name
+                if (last != name) {
                     this.name = name
-                    return true
+                    return Pair(true, last)
                 }
             }
         }
 
-        return false
+        return null
     }
 }

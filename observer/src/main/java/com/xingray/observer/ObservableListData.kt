@@ -17,14 +17,14 @@ class ObservableListData<E : Observable, T : ObservableList<E>>(
     constructor(t: T?) : this(ObservableListWrapper(t))
     constructor() : this(null)
 
-    fun changeItems(list: MutableList<E?>?): Boolean {
-        val changed = listDataWrapper.change(list)
-        if (changed) {
+    fun changeItems(list: MutableList<E?>?): Pair<Boolean, List<E?>?>? {
+        val pair = listDataWrapper.change(list)
+        if (pair != null && pair.first) {
             observers.traverseOnExecutor {
-                it.onListChanged(list)
+                it.onListChanged(list, pair.second)
             }
         }
-        return changed
+        return pair
     }
 
     fun insertItems(position: Int, items: List<E?>): Boolean {
@@ -67,55 +67,56 @@ class ObservableListData<E : Observable, T : ObservableList<E>>(
         return removeItems(position, 1)
     }
 
-    fun clear(): Boolean {
-        return changeItems(null)
+    fun clear() {
+        changeItems(null)
     }
 
-    fun setItem(position: Int, e: E?): Boolean {
-        val changed = listDataWrapper.setItem(position, e)
-        if (changed) {
+    fun setItem(position: Int, e: E?): Pair<Boolean, E?>? {
+        val pair = listDataWrapper.setItem(position, e)
+        if (pair != null && pair.first) {
             observers.traverseOnExecutor {
-                it.onItemChanged(position, e)
+                it.onItemChanged(position, e, pair.second)
             }
         }
-        return changed
+        return pair
     }
 
-    fun setItems(position: Int, items: List<E?>): Boolean {
-        val (changed, itemsChanged) = listDataWrapper.setItems(position, items)
-        if (changed) {
+    fun setItems(position: Int, items: List<E?>): Array<Pair<Boolean, E?>?>? {
+        val pairs = listDataWrapper.setItems(position, items)
+        if (pairs?.isNotEmpty() == true) {
             observers.traverseOnExecutor {
-                for (i in itemsChanged.indices) {
-                    if (itemsChanged[i]) {
+                for (i in pairs.indices) {
+                    val pair = pairs[i]
+                    if (pair != null && pair.first) {
                         val index = position + i
-                        it.onItemChanged(index, items[index])
+                        it.onItemChanged(index, items[index], pair.second)
                     }
                 }
             }
         }
-        return changed
+        return pairs
     }
 
-    fun updateItem(position: Int, patches: List<Patch>?): List<Patch>? {
-        val appliedPatches = listDataWrapper.updateItem(position, patches)
-        if (appliedPatches?.isNotEmpty() == true) {
+    fun updateItem(position: Int, patches: List<Patch>?): List<Pair<Patch, Any?>>? {
+        val pairs = listDataWrapper.updateItem(position, patches)
+        if (pairs?.isNotEmpty() == true) {
             observers.traverseOnExecutor { listObserver ->
-                appliedPatches.forEach { patch ->
-                    listObserver.onItemUpdated(position, patch)
+                pairs.forEach { pair ->
+                    listObserver.onItemUpdated(position, pair.first, pair.second)
                 }
             }
         }
-        return appliedPatches
+        return pairs
     }
 
-    fun updateItem(position: Int, patch: Patch): Boolean {
-        val applied = listDataWrapper.updateItem(position, patch)
-        if (applied) {
+    fun updateItem(position: Int, patch: Patch): Pair<Boolean, Any?>? {
+        val pair = listDataWrapper.updateItem(position, patch)
+        if (pair?.first == true) {
             observers.traverseOnExecutor { listObserver ->
-                listObserver.onItemUpdated(position, patch)
+                listObserver.onItemUpdated(position, patch, pair.second)
             }
         }
-        return applied
+        return pair
     }
 
     fun getItem(position: Int): E? {

@@ -19,7 +19,7 @@ interface ObservableList<E : Observable> : Observable {
     /**
      * 设置指定位置数据
      */
-    fun setItem(position: Int, e: E?): E?
+    fun setItem(position: Int, item: E?): Pair<Boolean, E?>?
 
     /**
      * 获取列表元素数量
@@ -29,7 +29,7 @@ interface ObservableList<E : Observable> : Observable {
     /**
      * 替换整个列表
      */
-    fun changeList(list: MutableList<E?>?): Boolean
+    fun changeList(list: MutableList<E?>?): Pair<Boolean, List<E?>?>?
 
     /**
      * 插入数据
