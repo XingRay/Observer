@@ -1,7 +1,7 @@
 package com.xingray.observer.field
 
 /**
- * xxx
+ * 工具类
  *
  * @author : leixing
  * @date : 2019/10/23 13:39
