@@ -1,7 +1,7 @@
-package com.xingray.observer.field
+package com.xingray.observer.field.kotlin
 
 /**
- * 可观察的`Boolean`字段
+ * 可观察的`Int`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field
  * mail : leixing@baidu.com
  *
  */
-class ObservableBooleanField(private var value: Boolean) {
+class IntField(private var value: Int) {
 
-    constructor() : this(false)
+    constructor() : this(0)
 
-    fun get(): Boolean {
+    fun get(): Int {
         return value
     }
 
-    fun set(value: Boolean): Pair<Boolean, Boolean>? {
+    fun set(value: Int): Pair<Boolean, Int>? {
         if (value == this.value) {
             return null
         }

@@ -59,3 +59,53 @@ fun <E : Observable> ObservableList<E>.move(fromIndex: Int, toIndex: Int, size: 
 fun <E : Observable> ObservableList<E>.isOutOfIndex(index: Int): Boolean {
     return index < 0 || index >= size()
 }
+
+fun Observable.applyPatches(patches: List<Patch>?): List<Pair<Patch, Any?>>? {
+    if (patches == null || patches.isEmpty()) {
+        return null
+    }
+    var appliedPatches: MutableList<Pair<Patch, Any?>>? = null
+    for (patch in patches) {
+        val pair: Pair<Boolean, Any?>? = applyPatch(patch)
+        if (pair != null && pair.first) {
+            if (appliedPatches == null) {
+                appliedPatches = mutableListOf()
+            }
+            appliedPatches.add(Pair(patch, pair.second))
+        }
+    }
+    return appliedPatches
+}
+
+fun <T> MutableList<T>.remove(index: Int, size: Int): Int {
+    var removedCount = 0
+
+    if (this is RandomAccess) {
+        val lastIndex = index + size
+        for (i in 0 until size) {
+            removeAt(lastIndex - i)
+            removedCount++
+        }
+    } else {
+        var i = 0
+        val iterator = iterator()
+        while (i < index && iterator.hasNext()) {
+            iterator.next()
+            i++
+        }
+
+        if (i < index) {
+            return removedCount
+        }
+
+        i = 0
+        while (i < size && iterator.hasNext()) {
+            iterator.next()
+            iterator.remove()
+            removedCount++
+            i++
+        }
+    }
+
+    return removedCount
+}

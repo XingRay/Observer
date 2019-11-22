@@ -1,7 +1,7 @@
-package com.xingray.observer.field
+package com.xingray.observer.field.kotlin
 
 /**
- * 可观察的`Float`字段
+ * 可观察的`Long`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field
  * mail : leixing@baidu.com
  *
  */
-class ObservableFloatField(private var value: Float) {
+class LongField(private var value: Long) {
 
-    constructor() : this(0f)
+    constructor() : this(0)
 
-    fun get(): Float {
+    fun get(): Long {
         return value
     }
 
-    fun set(value: Float): Pair<Boolean, Float>? {
+    fun set(value: Long): Pair<Boolean, Long>? {
         if (value == this.value) {
             return null
         }

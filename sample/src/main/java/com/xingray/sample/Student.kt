@@ -2,7 +2,7 @@ package com.xingray.sample
 
 import com.xingray.observer.Observable
 import com.xingray.observer.Patch
-import com.xingray.observer.field.ObservableField
+import com.xingray.observer.field.kotlin.TypeField
 
 class Student(
     name: String,
@@ -11,10 +11,10 @@ class Student(
     mark: Int
 ) : Observable {
 
-    val name = ObservableField(name)
-    val sex = ObservableField(sex)
-    val age = ObservableField(age)
-    val mark = ObservableField(mark)
+    val name = TypeField(name)
+    val sex = TypeField(sex)
+    val age = TypeField(age)
+    val mark = TypeField(mark)
 
     companion object {
         var FIELD_NAME: String = "Student#name"

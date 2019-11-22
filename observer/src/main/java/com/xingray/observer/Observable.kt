@@ -10,23 +10,5 @@ package com.xingray.observer
  *
  */
 interface Observable {
-
-    fun applyPatches(patches: List<Patch>?): List<Pair<Patch, Any?>>? {
-        if (patches == null || patches.isEmpty()) {
-            return null
-        }
-        var appliedPatches: MutableList<Pair<Patch, Any?>>? = null
-        for (patch in patches) {
-            val pair: Pair<Boolean, Any?>? = applyPatch(patch)
-            if (pair != null && pair.first) {
-                if (appliedPatches == null) {
-                    appliedPatches = mutableListOf()
-                }
-                appliedPatches.add(Pair(patch, pair.second))
-            }
-        }
-        return appliedPatches
-    }
-
     fun applyPatch(patch: Patch): Pair<Boolean, Any?>?
 }

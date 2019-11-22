@@ -1,7 +1,7 @@
-package com.xingray.observer.field
+package com.xingray.observer.field.kotlin
 
 /**
- * 可观察的`Double`字段
+ * 可观察的`Boolean`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field
  * mail : leixing@baidu.com
  *
  */
-class ObservableDoubleField(private var value: Double) {
+class BooleanField(private var value: Boolean) {
 
-    constructor() : this(0.0)
+    constructor() : this(false)
 
-    fun get(): Double {
+    fun get(): Boolean {
         return value
     }
 
-    fun set(value: Double): Pair<Boolean, Double>? {
+    fun set(value: Boolean): Pair<Boolean, Boolean>? {
         if (value == this.value) {
             return null
         }

@@ -2,8 +2,8 @@ package com.xingray.sample
 
 import com.xingray.observer.ObservableList
 import com.xingray.observer.Patch
-import com.xingray.observer.field.ObservableField
-import com.xingray.observer.field.ObservableListField
+import com.xingray.observer.field.kotlin.TypeField
+import com.xingray.observer.field.ListField
 
 class Room(name: String, id: String, area: Int) : ObservableList<Student> {
 
@@ -13,11 +13,11 @@ class Room(name: String, id: String, area: Int) : ObservableList<Student> {
         var FIELD_AREA = "Room#area"
     }
 
-    val name = ObservableField(name)
-    val id = ObservableField(id)
-    val area = ObservableField(area)
+    val name = TypeField(name)
+    val id = TypeField(id)
+    val area = TypeField(area)
 
-    var students = ObservableListField<Student>()
+    var students = ListField<Student>()
 
     override fun toString(): String {
         return "Room{" +

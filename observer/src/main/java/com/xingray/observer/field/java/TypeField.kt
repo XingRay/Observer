@@ -1,24 +1,24 @@
-package com.xingray.observer.field
+package com.xingray.observer.field.java
 
 /**
- * 可观察的`Long`字段
+ * 可观察字段
  *
  * @author : leixing
- * @date : 2019/11/22 14:29
+ * @date : 2019/11/22 0:36
  * @version : 1.0.0
  * mail : leixing@baidu.com
  *
  */
-class ObservableLongField(private var value: Long) {
+open class TypeField<T>(internal var value: T?) {
 
-    constructor() : this(0)
+    constructor() : this(null)
 
-    fun get(): Long {
+    fun get(): T? {
         return value
     }
 
-    fun set(value: Long): Pair<Boolean, Long>? {
-        if (value == this.value) {
+    fun set(value: T?): Pair<Boolean, Any?>? {
+        if (value === this.value) {
             return null
         }
         val last = this.value

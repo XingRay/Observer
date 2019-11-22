@@ -1,5 +1,8 @@
 package com.xingray.observer.field
 
+import com.xingray.observer.field.kotlin.TypeField
+import com.xingray.observer.remove
+
 /**
  * 可观察的列表字段
  *
@@ -9,8 +12,8 @@ package com.xingray.observer.field
  * mail : leixing@baidu.com
  *
  */
-class ObservableListField<T>(value: MutableList<T?>?) :
-    ObservableField<MutableList<T?>>(value) {
+class ListField<T>(value: MutableList<T?>?) :
+    TypeField<MutableList<T?>>(value) {
 
     constructor() : this(null)
 

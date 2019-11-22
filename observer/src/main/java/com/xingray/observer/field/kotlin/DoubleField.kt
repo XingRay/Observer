@@ -1,24 +1,24 @@
-package com.xingray.observer.field
+package com.xingray.observer.field.kotlin
 
 /**
- * 可观察字段
+ * 可观察的`Double`字段
  *
  * @author : leixing
- * @date : 2019/11/22 0:36
+ * @date : 2019/11/22 14:29
  * @version : 1.0.0
  * mail : leixing@baidu.com
  *
  */
-open class ObservableField<T>(internal var value: T?) {
+class DoubleField(private var value: Double) {
 
-    constructor() : this(null)
+    constructor() : this(0.0)
 
-    fun get(): T? {
+    fun get(): Double {
         return value
     }
 
-    fun set(value: T?): Pair<Boolean, T?>? {
-        if (value === this.value) {
+    fun set(value: Double): Pair<Boolean, Double>? {
+        if (value == this.value) {
             return null
         }
         val last = this.value

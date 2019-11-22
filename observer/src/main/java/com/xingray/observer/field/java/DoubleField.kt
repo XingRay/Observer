@@ -1,7 +1,7 @@
-package com.xingray.observer.field
+package com.xingray.observer.field.java
 
 /**
- * 可观察的`Short`字段
+ * 可观察的`Double`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field
  * mail : leixing@baidu.com
  *
  */
-class ObservableShortField(private var value: Short) {
+class DoubleField(private var value: Double) {
 
-    constructor() : this(0)
+    constructor() : this(0.0)
 
-    fun get(): Short {
+    fun get(): Double {
         return value
     }
 
-    fun set(value: Short): Pair<Boolean, Short>? {
+    fun set(value: Double): Pair<Boolean, Any?>? {
         if (value == this.value) {
             return null
         }

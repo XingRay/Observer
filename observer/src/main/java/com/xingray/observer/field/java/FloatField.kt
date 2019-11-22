@@ -1,7 +1,7 @@
-package com.xingray.observer.field
+package com.xingray.observer.field.java
 
 /**
- * 可观察的`Byte`字段
+ * 可观察的`Float`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field
  * mail : leixing@baidu.com
  *
  */
-class ObservableByteField(private var value: Byte) {
+class FloatField(private var value: Float) {
 
-    constructor() : this(0)
+    constructor() : this(0f)
 
-    fun get(): Byte {
+    fun get(): Float {
         return value
     }
 
-    fun set(value: Byte): Pair<Boolean, Byte>? {
+    fun set(value: Float): Pair<Boolean, Any?>? {
         if (value == this.value) {
             return null
         }
