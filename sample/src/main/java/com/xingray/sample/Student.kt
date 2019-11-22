@@ -2,7 +2,7 @@ package com.xingray.sample
 
 import com.xingray.observer.Observable
 import com.xingray.observer.Patch
-import com.xingray.observer.field.kotlin.TypeField
+import com.xingray.observer.ext.field.kotlin.TypeField
 
 class Student(
     name: String,

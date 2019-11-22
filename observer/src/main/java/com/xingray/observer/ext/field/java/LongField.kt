@@ -1,7 +1,7 @@
-package com.xingray.observer.field.java
+package com.xingray.observer.ext.field.java
 
 /**
- * 可观察的`Short`字段
+ * 可观察的`Long`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.java
  * mail : leixing@baidu.com
  *
  */
-class ShortField(private var value: Short) {
+class LongField(private var value: Long) {
 
     constructor() : this(0)
 
-    fun get(): Short {
+    fun get(): Long {
         return value
     }
 
-    fun set(value: Short): Pair<Boolean, Any?>? {
+    fun set(value: Long): Pair<Boolean, Any?>? {
         if (value == this.value) {
             return null
         }

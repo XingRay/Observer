@@ -1,7 +1,7 @@
-package com.xingray.observer.field.kotlin
+package com.xingray.observer.ext.field.java
 
 /**
- * 可观察的`Int`字段
+ * 可观察的`Double`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.kotlin
  * mail : leixing@baidu.com
  *
  */
-class IntField(private var value: Int) {
+class DoubleField(private var value: Double) {
 
-    constructor() : this(0)
+    constructor() : this(0.0)
 
-    fun get(): Int {
+    fun get(): Double {
         return value
     }
 
-    fun set(value: Int): Pair<Boolean, Int>? {
+    fun set(value: Double): Pair<Boolean, Any?>? {
         if (value == this.value) {
             return null
         }

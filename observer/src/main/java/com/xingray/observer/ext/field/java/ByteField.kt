@@ -1,7 +1,7 @@
-package com.xingray.observer.field.java
+package com.xingray.observer.ext.field.java
 
 /**
- * 可观察的`Char`字段
+ * 可观察的`Byte`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.java
  * mail : leixing@baidu.com
  *
  */
-class CharField(private var value: Char) {
+class ByteField(private var value: Byte) {
 
-    constructor() : this(0.toChar())
+    constructor() : this(0)
 
-    fun get(): Char {
+    fun get(): Byte {
         return value
     }
 
-    fun set(value: Char): Pair<Boolean, Any?>? {
+    fun set(value: Byte): Pair<Boolean, Any?>? {
         if (value == this.value) {
             return null
         }

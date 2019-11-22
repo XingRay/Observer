@@ -2,8 +2,8 @@ package com.xingray.sample
 
 import com.xingray.observer.ObservableList
 import com.xingray.observer.Patch
-import com.xingray.observer.field.kotlin.TypeField
-import com.xingray.observer.field.ListField
+import com.xingray.observer.ext.field.kotlin.TypeField
+import com.xingray.observer.ext.field.ListField
 
 class Room(name: String, id: String, area: Int) : ObservableList<Student> {
 

@@ -1,6 +1,7 @@
 package com.xingray.observer
 
 import com.xingray.setmap.SetMap
+import com.xingray.setmap.SetMap2
 import java.util.concurrent.Executor
 
 /**
@@ -18,7 +19,7 @@ fun <V> SetMap<Executor, V>.traverseOnExecutor(processor: (V) -> Unit) {
     }
 
     for ((executor, values) in this) {
-        if (values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             continue
         }
         executor.execute {
@@ -108,4 +109,33 @@ fun <T> MutableList<T>.remove(index: Int, size: Int): Int {
     }
 
     return removedCount
+}
+
+fun <K0, V> SetMap2<K0, Executor?, V>?.traverse(k0: K0, processor: (V) -> Unit) {
+    if (this == null || this.isEmpty()) {
+        return
+    }
+    this[k0]?.traverse(processor)
+}
+
+fun <V> SetMap<Executor?, V>?.traverse(processor: (V) -> Unit) {
+    if (this == null || this.isEmpty()) {
+        return
+    }
+    for ((executor, values) in this) {
+        if (values == null || values.isEmpty()) {
+            continue
+        }
+        if (executor == null) {
+            for (v in values) {
+                processor.invoke(v)
+            }
+        } else {
+            executor.execute(Runnable {
+                for (v in values) {
+                    processor.invoke(v)
+                }
+            })
+        }
+    }
 }

@@ -1,7 +1,7 @@
-package com.xingray.observer.field.kotlin
+package com.xingray.observer.ext.field.java
 
 /**
- * 可观察的`Short`字段
+ * 可观察的`Char`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.kotlin
  * mail : leixing@baidu.com
  *
  */
-class ShortField(private var value: Short) {
+class CharField(private var value: Char) {
 
-    constructor() : this(0)
+    constructor() : this(0.toChar())
 
-    fun get(): Short {
+    fun get(): Char {
         return value
     }
 
-    fun set(value: Short): Pair<Boolean, Short>? {
+    fun set(value: Char): Pair<Boolean, Any?>? {
         if (value == this.value) {
             return null
         }

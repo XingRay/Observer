@@ -1,24 +1,24 @@
-package com.xingray.observer.field.java
+package com.xingray.observer.ext.field.kotlin
 
 /**
- * 可观察的`Byte`字段
+ * 可观察字段
  *
  * @author : leixing
- * @date : 2019/11/22 14:29
+ * @date : 2019/11/22 0:36
  * @version : 1.0.0
  * mail : leixing@baidu.com
  *
  */
-class ByteField(private var value: Byte) {
+open class TypeField<T>(internal var value: T?) {
 
-    constructor() : this(0)
+    constructor() : this(null)
 
-    fun get(): Byte {
+    fun get(): T? {
         return value
     }
 
-    fun set(value: Byte): Pair<Boolean, Any?>? {
-        if (value == this.value) {
+    fun set(value: T?): Pair<Boolean, T?>? {
+        if (value === this.value) {
             return null
         }
         val last = this.value

@@ -1,4 +1,4 @@
-package com.xingray.observer.field.java
+package com.xingray.observer.ext.field.java
 
 /**
  * 可观察字段

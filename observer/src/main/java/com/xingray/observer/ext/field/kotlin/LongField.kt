@@ -1,7 +1,7 @@
-package com.xingray.observer.field.kotlin
+package com.xingray.observer.ext.field.kotlin
 
 /**
- * 可观察的`Boolean`字段
+ * 可观察的`Long`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.kotlin
  * mail : leixing@baidu.com
  *
  */
-class BooleanField(private var value: Boolean) {
+class LongField(private var value: Long) {
 
-    constructor() : this(false)
+    constructor() : this(0)
 
-    fun get(): Boolean {
+    fun get(): Long {
         return value
     }
 
-    fun set(value: Boolean): Pair<Boolean, Boolean>? {
+    fun set(value: Long): Pair<Boolean, Long>? {
         if (value == this.value) {
             return null
         }

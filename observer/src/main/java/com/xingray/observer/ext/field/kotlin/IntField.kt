@@ -1,7 +1,7 @@
-package com.xingray.observer.field.java
+package com.xingray.observer.ext.field.kotlin
 
 /**
- * 可观察的`Long`字段
+ * 可观察的`Int`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.java
  * mail : leixing@baidu.com
  *
  */
-class LongField(private var value: Long) {
+class IntField(private var value: Int) {
 
     constructor() : this(0)
 
-    fun get(): Long {
+    fun get(): Int {
         return value
     }
 
-    fun set(value: Long): Pair<Boolean, Any?>? {
+    fun set(value: Int): Pair<Boolean, Int>? {
         if (value == this.value) {
             return null
         }

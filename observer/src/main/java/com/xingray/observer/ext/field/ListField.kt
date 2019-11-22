@@ -1,6 +1,6 @@
-package com.xingray.observer.field
+package com.xingray.observer.ext.field
 
-import com.xingray.observer.field.kotlin.TypeField
+import com.xingray.observer.ext.field.kotlin.TypeField
 import com.xingray.observer.remove
 
 /**

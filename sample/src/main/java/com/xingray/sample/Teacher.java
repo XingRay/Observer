@@ -2,9 +2,9 @@ package com.xingray.sample;
 
 import com.xingray.observer.ObservableList;
 import com.xingray.observer.Patch;
-import com.xingray.observer.field.ListField;
-import com.xingray.observer.field.java.IntField;
-import com.xingray.observer.field.java.TypeField;
+import com.xingray.observer.ext.field.ListField;
+import com.xingray.observer.ext.field.java.IntField;
+import com.xingray.observer.ext.field.java.TypeField;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

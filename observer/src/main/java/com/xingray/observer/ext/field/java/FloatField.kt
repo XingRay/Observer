@@ -1,7 +1,7 @@
-package com.xingray.observer.field.java
+package com.xingray.observer.ext.field.java
 
 /**
- * 可观察的`Double`字段
+ * 可观察的`Float`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.java
  * mail : leixing@baidu.com
  *
  */
-class DoubleField(private var value: Double) {
+class FloatField(private var value: Float) {
 
-    constructor() : this(0.0)
+    constructor() : this(0f)
 
-    fun get(): Double {
+    fun get(): Float {
         return value
     }
 
-    fun set(value: Double): Pair<Boolean, Any?>? {
+    fun set(value: Float): Pair<Boolean, Any?>? {
         if (value == this.value) {
             return null
         }

@@ -1,7 +1,7 @@
-package com.xingray.observer.field.java
+package com.xingray.observer.ext.field.kotlin
 
 /**
- * 可观察的`Float`字段
+ * 可观察的`Char`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.java
  * mail : leixing@baidu.com
  *
  */
-class FloatField(private var value: Float) {
+class CharField(private var value: Char) {
 
-    constructor() : this(0f)
+    constructor() : this(0.toChar())
 
-    fun get(): Float {
+    fun get(): Char {
         return value
     }
 
-    fun set(value: Float): Pair<Boolean, Any?>? {
+    fun set(value: Char): Pair<Boolean, Char>? {
         if (value == this.value) {
             return null
         }

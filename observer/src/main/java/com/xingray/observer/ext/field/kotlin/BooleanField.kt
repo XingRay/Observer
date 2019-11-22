@@ -1,7 +1,7 @@
-package com.xingray.observer.field.kotlin
+package com.xingray.observer.ext.field.kotlin
 
 /**
- * 可观察的`Byte`字段
+ * 可观察的`Boolean`字段
  *
  * @author : leixing
  * @date : 2019/11/22 14:29
@@ -9,15 +9,15 @@ package com.xingray.observer.field.kotlin
  * mail : leixing@baidu.com
  *
  */
-class ByteField(private var value: Byte) {
+class BooleanField(private var value: Boolean) {
 
-    constructor() : this(0)
+    constructor() : this(false)
 
-    fun get(): Byte {
+    fun get(): Boolean {
         return value
     }
 
-    fun set(value: Byte): Pair<Boolean, Byte>? {
+    fun set(value: Boolean): Pair<Boolean, Boolean>? {
         if (value == this.value) {
             return null
         }
