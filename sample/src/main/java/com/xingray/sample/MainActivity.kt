@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.xingray.observer.ListObserver
 import com.xingray.observer.Patch
+import com.xingray.primary.IntObserver
 import com.xingray.recycleradapter.LayoutId
 import com.xingray.recycleradapter.RecyclerAdapter
 import com.xingray.recycleradapter.ViewHolder
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private var adapter: RecyclerAdapter? = null
     private val roomManager = RoomManager()
+    private val teacher = Teacher()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,6 +137,12 @@ class MainActivity : AppCompatActivity() {
                         tvName.text = name
                     }
                 }
+            }
+        })
+
+        roomManager.bedCount.addObserver(TaskExecutor.uiPool(), object : IntObserver {
+            override fun onChanged(current: Int, last: Int) {
+                Log.i(TAG, "onChanged: $current $last")
             }
         })
     }

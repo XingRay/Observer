@@ -5,6 +5,7 @@ import com.xingray.observer.Patch;
 import com.xingray.observer.ext.field.ListField;
 import com.xingray.observer.ext.field.java.IntField;
 import com.xingray.observer.ext.field.java.TypeField;
+import com.xingray.primary.ObservableInt;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +31,14 @@ public class Teacher implements ObservableList<Student> {
     public static final String FIELD_AGE = "Teacher#age";
 
     private ListField<Student> students = new ListField<>();
+
+    public final ObservableInt level = new ObservableInt();
+
+    public Teacher() {
+        level.addObserver(TaskExecutor.uiPool(), (current, last) -> {
+
+        });
+    }
 
     @Nullable
     @Override

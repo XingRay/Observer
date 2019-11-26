@@ -4,6 +4,7 @@ package com.xingray.sample
 import com.xingray.observer.ListObserver
 import com.xingray.observer.ObservableListData
 import com.xingray.observer.Patch
+import com.xingray.primary.ObservableInt
 import java.util.concurrent.Executor
 
 /**
@@ -12,6 +13,7 @@ import java.util.concurrent.Executor
 class RoomManager {
 
     private var roomData = ObservableListData<Student, Room>()
+    val bedCount = ObservableInt()
 
     var room: Room?
         get() = roomData.get()
