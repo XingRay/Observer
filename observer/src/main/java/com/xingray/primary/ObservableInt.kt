@@ -10,14 +10,14 @@ import java.util.concurrent.Executor
  * @author : leixing
  * @date : 2019/11/26 22:49
  * @version : 1.0.0
- * mail : leixing@baidu.com
+ * mail : leixing1012@qq.com
  *
  */
 class ObservableInt(private var value: Int) {
 
     constructor() : this(0)
 
-    private val observers by lazy { SetMap<Executor, (Int, Int) -> Unit>() }
+    private val observers by lazy { SetMap<Executor?, (Int, Int) -> Unit>() }
 
     fun addObserver(executor: Executor, observer: IntObserver) {
         addObserver(executor, observer::onChanged)

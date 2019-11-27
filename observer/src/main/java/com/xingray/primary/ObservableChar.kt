@@ -10,14 +10,14 @@ import java.util.concurrent.Executor
  * @author : leixing
  * @date : 2019/11/26 22:49
  * @version : 1.0.0
- * mail : leixing@baidu.com
+ * mail : leixing1012@qq.com
  *
  */
 class ObservableChar(private var value: Char) {
 
     constructor() : this(0.toChar())
 
-    private val observers by lazy { SetMap<Executor, (Char, Char) -> Unit>() }
+    private val observers by lazy { SetMap<Executor?, (Char, Char) -> Unit>() }
 
     fun addObserver(executor: Executor, observer: CharObserver) {
         addObserver(executor, observer::onChanged)

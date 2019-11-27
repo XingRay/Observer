@@ -17,11 +17,11 @@ class ObservableListData<E : Observable, T : ObservableList<E>>(
     constructor(t: T?) : this(ObservableListWrapper(t))
     constructor() : this(null)
 
-    fun changeItems(list: MutableList<E?>?): Pair<Boolean, List<E?>?>? {
-        val pair = listDataWrapper.change(list)
+    fun changeItems(items: MutableList<E?>?): Pair<Boolean, List<E?>?>? {
+        val pair = listDataWrapper.change(items)
         if (pair != null && pair.first) {
             observers.traverseOnExecutor {
-                it.onListChanged(list, pair.second)
+                it.onListChanged(items, pair.second)
             }
         }
         return pair

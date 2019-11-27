@@ -10,14 +10,14 @@ import java.util.concurrent.Executor
  * @author : leixing
  * @date : 2019/11/26 22:49
  * @version : 1.0.0
- * mail : leixing@baidu.com
+ * mail : leixing1012@qq.com
  *
  */
 class ObservableFloat(private var value: Float) {
 
     constructor() : this(0f)
 
-    private val observers by lazy { SetMap<Executor, (Float, Float) -> Unit>() }
+    private val observers by lazy { SetMap<Executor?, (Float, Float) -> Unit>() }
 
     fun addObserver(executor: Executor, observer: FloatObserver) {
         addObserver(executor, observer::onChanged)

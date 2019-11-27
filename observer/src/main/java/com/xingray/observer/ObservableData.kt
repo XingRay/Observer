@@ -20,7 +20,7 @@ open class ObservableData<T : Observable, O : Observer<T>>(
 
     constructor() : this(null)
 
-    val observers by lazy { SetMap<Executor, O>() }
+    val observers by lazy { SetMap<Executor?, O>() }
 
     open fun addObserver(executor: Executor, observer: O) {
         observers.add(executor, observer)
@@ -45,15 +45,15 @@ open class ObservableData<T : Observable, O : Observer<T>>(
     }
 
     fun update(patches: List<Patch>?): List<Pair<Patch, Any?>>? {
-        val appliedPatches = dataWrapper.update(patches)
-        if (appliedPatches?.isNotEmpty() == true) {
+        val pairs = dataWrapper.update(patches)
+        if (pairs?.isNotEmpty() == true) {
             observers.traverseOnExecutor { observer ->
-                appliedPatches.forEach { pair ->
+                pairs.forEach { pair ->
                     observer.onUpdated(pair.first, pair.second)
                 }
             }
         }
-        return appliedPatches
+        return pairs
     }
 
     fun update(patch: Patch): Pair<Boolean, Any?>? {

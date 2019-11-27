@@ -10,14 +10,14 @@ import java.util.concurrent.Executor
  * @author : leixing
  * @date : 2019/11/26 22:49
  * @version : 1.0.0
- * mail : leixing@baidu.com
+ * mail : leixing1012@qq.com
  *
  */
 class ObservableLong(private var value: Long) {
 
     constructor() : this(0)
 
-    private val observers by lazy { SetMap<Executor, (Long, Long) -> Unit>() }
+    private val observers by lazy { SetMap<Executor?, (Long, Long) -> Unit>() }
 
     fun addObserver(executor: Executor, observer: LongObserver) {
         addObserver(executor, observer::onChanged)

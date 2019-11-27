@@ -23,7 +23,7 @@ Add it in your root build.gradle at the end of repositories:
 
 ```css
 	dependencies {
-	        implementation 'com.github.XingRay:Observer:0.0.9'
+	        implementation 'com.github.XingRay:Observer:0.0.10'
 	}
 ```
 

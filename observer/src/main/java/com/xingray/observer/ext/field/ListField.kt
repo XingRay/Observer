@@ -9,7 +9,7 @@ import com.xingray.observer.remove
  * @author : leixing
  * @date : 2019/11/22 0:54
  * @version : 1.0.0
- * mail : leixing@baidu.com
+ * mail : leixing1012@qq.com
  *
  */
 class ListField<T>(value: MutableList<T?>?) :

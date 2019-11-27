@@ -13,23 +13,6 @@ import java.util.concurrent.Executor
  * @date : 2019/9/21 18:28
  */
 
-fun <V> SetMap<Executor, V>.traverseOnExecutor(processor: (V) -> Unit) {
-    if (isEmpty()) {
-        return
-    }
-
-    for ((executor, values) in this) {
-        if (values == null || values.isEmpty()) {
-            continue
-        }
-        executor.execute {
-            for (v in values) {
-                processor.invoke(v)
-            }
-        }
-    }
-}
-
 fun <E : Observable> ObservableList<E>.move(fromIndex: Int, toIndex: Int, size: Int): Boolean {
     if (fromIndex == toIndex
         || size <= 0
@@ -111,14 +94,14 @@ fun <T> MutableList<T>.remove(index: Int, size: Int): Int {
     return removedCount
 }
 
-fun <K0, V> SetMap2<K0, Executor?, V>?.traverse(k0: K0, processor: (V) -> Unit) {
+fun <K0, V> SetMap2<K0, Executor?, V>?.traverseOnExecutor(k0: K0, processor: (V) -> Unit) {
     if (this == null || this.isEmpty()) {
         return
     }
-    this[k0]?.traverse(processor)
+    this[k0]?.traverseOnExecutor(processor)
 }
 
-fun <V> SetMap<Executor?, V>?.traverse(processor: (V) -> Unit) {
+fun <V> SetMap<Executor?, V>?.traverseOnExecutor(processor: (V) -> Unit) {
     if (this == null || this.isEmpty()) {
         return
     }
@@ -138,4 +121,53 @@ fun <V> SetMap<Executor?, V>?.traverse(processor: (V) -> Unit) {
             })
         }
     }
+}
+
+fun <E : Observable, T : ObservableList<E>> T?.setItems(
+    position: Int,
+    items: List<E?>
+): Array<Pair<Boolean, E?>?>? {
+    val list = this ?: return null
+    var pairs: Array<Pair<Boolean, E?>?>? = null
+
+    for (i in items.indices) {
+        val pair: Pair<Boolean, E?>? = list.setItem(position, items[i])
+        if (pair != null && pair.first) {
+            if (pairs == null) {
+                pairs = Array(items.size) { null }
+            }
+            pairs[i] = pair
+        }
+    }
+
+    return pairs
+}
+
+fun <E : Observable, T : ObservableList<E>> T?.updateItem(
+    position: Int,
+    patch: Patch
+): Pair<Boolean, Any?>? {
+    val list = this ?: return null
+    val item = list.getItem(position) ?: return null
+    return item.applyPatch(patch)
+}
+
+fun <E : Observable, T : ObservableList<E>> T?.updateItem(
+    position: Int,
+    patches: List<Patch>?
+): List<Pair<Patch, Any?>>? {
+    if (patches == null || patches.isEmpty()) {
+        return null
+    }
+    val list = this ?: return null
+    return list.getItem(position)?.applyPatches(patches)
+}
+
+fun <E : Observable, T : ObservableList<E>> T?.moveItems(
+    fromIndex: Int,
+    toIndex: Int,
+    size: Int
+): Boolean {
+    val list = this ?: return false
+    return list.move(fromIndex, toIndex, size)
 }

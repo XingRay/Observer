@@ -6,7 +6,7 @@ package com.xingray.observer.ext.field.kotlin
  * @author : leixing
  * @date : 2019/11/22 14:29
  * @version : 1.0.0
- * mail : leixing@baidu.com
+ * mail : leixing1012@qq.com
  *
  */
 class BooleanField(private var value: Boolean) {
