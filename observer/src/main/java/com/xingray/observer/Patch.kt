@@ -34,9 +34,9 @@ class Patch constructor(
 
     class Builder {
 
-        private val map by lazy { mutableMapOf<String, Any>() }
+        private val map by lazy { mutableMapOf<String, Any?>() }
 
-        fun add(name: String, payload: Any): Builder {
+        fun add(name: String, payload: Any?): Builder {
             map[name] = payload
             return this
         }

@@ -1,11 +1,10 @@
 package com.xingray.sample;
 
-import com.xingray.observer.ObservableList;
+import com.xingray.observer.MutableList;
 import com.xingray.observer.Patch;
-import com.xingray.observer.ext.field.ListField;
-import com.xingray.observer.ext.field.java.IntField;
-import com.xingray.observer.ext.field.java.TypeField;
-import com.xingray.primary.ObservableInt;
+import com.xingray.observer.field.ListField;
+import com.xingray.observer.field.IntField;
+import com.xingray.observer.observable.ObservableInt;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +21,7 @@ import kotlin.Pair;
  * mail : leixing1012@qq.com
  * @date : 2019/11/22 17:37
  */
-public class Teacher implements ObservableList<Student> {
+public class Teacher implements MutableList<Student> {
 
     private TypeField<String> name = new TypeField<>();
     public static final String FIELD_NAME = "Teacher#name";
@@ -40,21 +39,43 @@ public class Teacher implements ObservableList<Student> {
         });
     }
 
+//    @Nullable
+//    @Override
+//    public Pair<Boolean, Object> applyPatch(@NotNull Patch patch) {
+//        switch (patch.getName()) {
+//            case FIELD_NAME:
+//                return name.set(patch.getPayload());
+//
+//            case FIELD_AGE:
+//                Pair<Boolean, Integer> set = age.set(patch.getPayload());
+//                return set;
+//
+//            default:
+//
+//        }
+//        return null;
+//    }
+
     @Nullable
     @Override
-    public Pair<Boolean, Object> applyPatch(@NotNull Patch patch) {
-        switch (patch.getName()) {
-            case FIELD_NAME:
-                return name.set(patch.getPayload());
-
-            case FIELD_AGE:
-                return age.set(patch.getPayload());
-
-            default:
-
-        }
+    public Pair<Boolean, ?> applyPatch(@NotNull Patch patch) {
         return null;
     }
+
+
+//    public Pair<Boolean, ?> applyPatch2(@NotNull Patch patch) {
+//        switch (patch.getName()) {
+//            case FIELD_NAME:
+//                return name.set(patch.getPayload());
+//
+//            case FIELD_AGE:
+//                return age.set(patch.getPayload());
+//
+//            default:
+//
+//        }
+//        return null;
+//    }
 
     @Nullable
     @Override

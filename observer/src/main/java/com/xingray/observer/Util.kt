@@ -13,7 +13,7 @@ import java.util.concurrent.Executor
  * @date : 2019/9/21 18:28
  */
 
-fun <E : Observable> ObservableList<E>.move(fromIndex: Int, toIndex: Int, size: Int): Boolean {
+fun <E : MutableObject> MutableList<E>.move(fromIndex: Int, toIndex: Int, size: Int): Boolean {
     if (fromIndex == toIndex
         || size <= 0
         || isOutOfIndex(fromIndex)
@@ -40,15 +40,15 @@ fun <E : Observable> ObservableList<E>.move(fromIndex: Int, toIndex: Int, size: 
     return true
 }
 
-fun <E : Observable> ObservableList<E>.isOutOfIndex(index: Int): Boolean {
+fun <E : MutableObject> MutableList<E>.isOutOfIndex(index: Int): Boolean {
     return index < 0 || index >= size()
 }
 
-fun Observable.applyPatches(patches: List<Patch>?): List<Pair<Patch, Any?>>? {
+fun MutableObject.applyPatches(patches: List<Patch>?): List<Pair<Patch, Any?>>? {
     if (patches == null || patches.isEmpty()) {
         return null
     }
-    var appliedPatches: MutableList<Pair<Patch, Any?>>? = null
+    var appliedPatches: kotlin.collections.MutableList<Pair<Patch, Any?>>? = null
     for (patch in patches) {
         val pair: Pair<Boolean, Any?>? = applyPatch(patch)
         if (pair != null && pair.first) {
@@ -61,7 +61,7 @@ fun Observable.applyPatches(patches: List<Patch>?): List<Pair<Patch, Any?>>? {
     return appliedPatches
 }
 
-fun <T> MutableList<T>.remove(index: Int, size: Int): Int {
+fun <T> kotlin.collections.MutableList<T>.remove(index: Int, size: Int): Int {
     var removedCount = 0
 
     if (this is RandomAccess) {
@@ -123,7 +123,7 @@ fun <V> SetMap<Executor?, V>?.traverseOnExecutor(processor: (V) -> Unit) {
     }
 }
 
-fun <E : Observable, T : ObservableList<E>> T?.setItems(
+fun <E : MutableObject, T : MutableList<E>> T?.setItems(
     position: Int,
     items: List<E?>
 ): Array<Pair<Boolean, E?>?>? {
@@ -143,7 +143,7 @@ fun <E : Observable, T : ObservableList<E>> T?.setItems(
     return pairs
 }
 
-fun <E : Observable, T : ObservableList<E>> T?.updateItem(
+fun <E : MutableObject, T : MutableList<E>> T?.updateItem(
     position: Int,
     patch: Patch
 ): Pair<Boolean, Any?>? {
@@ -152,7 +152,7 @@ fun <E : Observable, T : ObservableList<E>> T?.updateItem(
     return item.applyPatch(patch)
 }
 
-fun <E : Observable, T : ObservableList<E>> T?.updateItem(
+fun <E : MutableObject, T : MutableList<E>> T?.updateItem(
     position: Int,
     patches: List<Patch>?
 ): List<Pair<Patch, Any?>>? {
@@ -163,7 +163,7 @@ fun <E : Observable, T : ObservableList<E>> T?.updateItem(
     return list.getItem(position)?.applyPatches(patches)
 }
 
-fun <E : Observable, T : ObservableList<E>> T?.moveItems(
+fun <E : MutableObject, T : MutableList<E>> T?.moveItems(
     fromIndex: Int,
     toIndex: Int,
     size: Int

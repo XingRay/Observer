@@ -1,10 +1,10 @@
 package com.xingray.sample
 
 
-import com.xingray.observer.ListObserver
-import com.xingray.observer.ObservableListData
+import com.xingray.observer.observer.ListObserver
+import com.xingray.observer.observable.ObservableMutableList
 import com.xingray.observer.Patch
-import com.xingray.primary.ObservableInt
+import com.xingray.observer.observable.ObservableInt
 import java.util.concurrent.Executor
 
 /**
@@ -12,7 +12,8 @@ import java.util.concurrent.Executor
  */
 class RoomManager {
 
-    private var roomData = ObservableListData<Student, Room>()
+    private var roomData =
+        ObservableMutableList<Student, Room>()
     val bedCount = ObservableInt()
 
     var room: Room?

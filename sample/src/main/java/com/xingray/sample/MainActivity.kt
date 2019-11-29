@@ -6,9 +6,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.xingray.observer.ListObserver
+import com.xingray.observer.observer.ListObserver
 import com.xingray.observer.Patch
-import com.xingray.primary.IntObserver
+import com.xingray.observer.observer.IntObserver
 import com.xingray.recycleradapter.LayoutId
 import com.xingray.recycleradapter.RecyclerAdapter
 import com.xingray.recycleradapter.ViewHolder
@@ -81,7 +81,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initObservers() {
 
-        roomManager.addObserver(TaskExecutor.uiPool(), object : ListObserver<Student, Room> {
+        roomManager.addObserver(TaskExecutor.uiPool(), object :
+            ListObserver<Student, Room> {
 
             override fun onItemChanged(position: Int, current: Student?, last: Student?) {
                 Log.i(TAG, "onListItemChanged: $position  $current $last")
@@ -140,7 +141,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        roomManager.bedCount.addObserver(TaskExecutor.uiPool(), object : IntObserver {
+        roomManager.bedCount.addObserver(TaskExecutor.uiPool(), object :
+            IntObserver {
             override fun onChanged(current: Int, last: Int) {
                 Log.i(TAG, "onChanged: $current $last")
             }

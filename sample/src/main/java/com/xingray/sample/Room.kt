@@ -1,11 +1,11 @@
 package com.xingray.sample
 
-import com.xingray.observer.ObservableList
+import com.xingray.observer.MutableList
 import com.xingray.observer.Patch
-import com.xingray.observer.ext.field.kotlin.TypeField
-import com.xingray.observer.ext.field.ListField
+import com.xingray.observer.field.ObjectField
 
-class Room(name: String, id: String, area: Int) : ObservableList<Student> {
+class Room(name: String, id: String, area: Int) :
+    MutableList<Student> {
 
     companion object {
         var FIELD_NAME = "Room#name"
@@ -13,11 +13,11 @@ class Room(name: String, id: String, area: Int) : ObservableList<Student> {
         var FIELD_AREA = "Room#area"
     }
 
-    val name = TypeField(name)
-    val id = TypeField(id)
-    val area = TypeField(area)
+    val name = ObjectField(name)
+    val id = ObjectField(id)
+    val area = ObjectField(area)
 
-    var students = ListField<Student>()
+    var students = _root_ide_package_.com.xingray.observer.field.ListField<Student>()
 
     override fun toString(): String {
         return "Room{" +
@@ -28,7 +28,7 @@ class Room(name: String, id: String, area: Int) : ObservableList<Student> {
                 '}'.toString()
     }
 
-    override fun changeList(list: MutableList<Student?>?): Pair<Boolean, List<Student?>?>? {
+    override fun changeList(list: kotlin.collections.MutableList<Student?>?): Pair<Boolean, List<Student?>?>? {
         return students.changeList(list)
     }
 
@@ -52,7 +52,23 @@ class Room(name: String, id: String, area: Int) : ObservableList<Student> {
         return students.size()
     }
 
-    override fun applyPatch(patch: Patch): Pair<Boolean, Any?>? {
+    //    override fun applyPatch(patch: Patch): Pair<Boolean, Any?>? {
+//        when (patch.name) {
+//            FIELD_NAME -> {
+//                return name.set(patch.getPayload())
+//            }
+//
+//            FIELD_AREA -> {
+//                return area.set(patch.getPayload())
+//            }
+//
+//            FIELD_ID -> {
+//                return id.set(patch.getPayload())
+//            }
+//        }
+//        return null
+//    }
+    override fun applyPatch(patch: Patch): Pair<Boolean, *>? {
         when (patch.name) {
             FIELD_NAME -> {
                 return name.set(patch.getPayload())
